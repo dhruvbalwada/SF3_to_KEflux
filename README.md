@@ -1,4 +1,4 @@
-# Spectral fluxes and injection scales of kinetic energy from surface drifters in the Gulf of Mexico
+## Spectral fluxes and injection scales of kinetic energy from surface drifters in the Gulf of Mexico
 **Jin-Han Xie, Dhruv Balwada, & Raffaele Marino**
 
 Code for paper. 
