@@ -16,6 +16,7 @@ nsamps = size(s3lll,2);
 r=dist_axis;
 Nr=length(r);
 
+% pick data points larger than 10m for fitting
 ns=find(dist_axis>=10,1);
 ne=Nr;
 
@@ -119,14 +120,28 @@ ylabel('$$\epsilon_j [m^2s^{-3}]$$','interpreter','latex')
 %title('Energy Input','interpreter','latex')
 set(gca,'FontSize',18,'FontName','Times')
 
-print('energy_input.eps','-depsc', '-r400')
+%print('energy_input.eps','-depsc', '-r400')
 
-%% Log scale for energy injection
+%% Plot of energy injection 
+close all 
+figure
+neg = mean_ebs - CI_ebs(2,:)';
+pos = - mean_ebs + CI_ebs(1,:)';
+errorbar(R/1e3, mean_ebs(1:end-1), neg(1:end-1), pos(1:end-1), '*', 'linewidth',2); 
+hold all 
+set(gca,'XScale','log')
+axis([10^-2 10^3 0 10^-7])
+xticks([10^-2, 10^-1, 1, 10, 100, 1000])
 
-figure, 
-loglog(R/1e3, median_ebs(1:end-1)+1e-15,'+')
-hold all
-loglog(R/1e3, mean_ebs(1:end-1)+1e-15,'o')
+%legend('Errorbars: 5th and 95th percentiles', 'Median', 'Mean', 'location','northeast')
+
+xlabel('$$r [km]$$','interpreter','latex')
+ylabel('$$\epsilon_j [m^2s^{-3}]$$','interpreter','latex')
+%title('Energy Input','interpreter','latex')
+set(gca,'FontSize',20,'FontName','Times')
+
+print('energy_input_2.eps','-depsc', '-r400')
+
 
 %% Plot of 3rd Order SF
 figure 
@@ -139,29 +154,32 @@ loglog(R/1e3,mean_Vt,'r','linewidth',2,'color',colors(5,:))
 loglog(R/1e3,-mean_Vt,'r--','linewidth',2, 'color',colors(5,:))
 
 axis([10^-2 10^3 10^-7 1])
+xticks([10^-2, 10^-1, 1, 10, 100, 1000])
 
-leg=legend('$|V(r)|$', '$+ V(r)$','$- V(r)$','$$V_{fit}+$$','$$V_{fit}-$$');
+leg=legend('$|V|$', '$+ V$','$- V$','$$+V_{fit}$$','$$-V_{fit}$$');
 set(leg,'interpreter','latex', 'location','best')
 xlabel('$$r [km]$$','interpreter','latex')
 ylabel('$$V (r) [m^3s^{-3}]$$','interpreter','latex')
-set(gca,'FontSize',18,'FontName','Times')
+set(gca,'FontSize',20,'FontName','Times')
 
 print('S3_and_fit.eps','-depsc', '-r400')
 
 
 %% Spectral Flux plot 
 figure
-shadedErrorBar_semilogx(kf*1e3, median_SpecFlux, CI_SpecFlux ...
+shadedErrorBar_semilogx(kf*1e3, mean_SpecFlux, CI_SpecFlux ...
                 ,{'o-','linewidth',2,'color', colors(1,:)}, 0.6)
 hold all 
-semilogx(kf*1e3, mean_SpecFlux, 'linewidth',2,'color', colors(2,:))
-grid on
+%semilogx(kf*1e3, mean_SpecFlux, 'linewidth',2,'color', colors(2,:))
+%grid on
 %leg=legend('Errorbars: 5th and 95th percentiles','Median','Mean');
 %set(leg,'interpreter','latex', 'location','best')
+yline(0, '--')
 xlabel('$$k [1/km]$$','interpreter','latex')
 ylabel('$$F(k) [m^2 s^{-3}]$$','interpreter','latex')
-set(gca,'FontSize',18,'FontName','Times')
+set(gca,'FontSize',20,'FontName','Times')
 
 axis([10^-3 100 -8*10^-8 8*10^-8])
+xticks([10^-3, 10^-2, .1, 1, 10, 100])
 
 print('spectral_flux.eps','-depsc', '-r400')
