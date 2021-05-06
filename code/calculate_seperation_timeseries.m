@@ -5,7 +5,7 @@ ndays = size(traj.X,1);
 
 n=1;
 % npairs = factorial(nflts)/factorial(nflts-2)/factorial(2);
-npairs = 297*296/2; 
+npairs = nflts*(nflts-1)/2; 
 
 sep(npairs).X = nan*ones(ndays,1);
 sep(npairs).Y = nan*ones(ndays,1);
@@ -24,10 +24,13 @@ for i=1:nflts-1
         sep(n).U2 = traj.U(:,j);
         sep(n).V1 = traj.V(:,i);
         sep(n).V2 = traj.V(:,j);
-        sep(n).Au1 = traj.Au(:,i);
-        sep(n).Au2 = traj.Au(:,j);
-        sep(n).Av1 = traj.Av(:,i);
-        sep(n).Av2 = traj.Av(:,j);
+        
+        % If we want acceleration SF
+        %sep(n).Au1 = traj.Au(:,i);
+        %sep(n).Au2 = traj.Au(:,j);
+        %sep(n).Av1 = traj.Av(:,i);
+        %sep(n).Av2 = traj.Av(:,j);
+        
         n = n+1;
     end
 end

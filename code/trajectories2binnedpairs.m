@@ -1,3 +1,8 @@
+
+% This is old code, which uses a lot of loops. The new code will be
+% designed to use pdist and hopefully will be faster.
+
+
 %% Trajectories to binned pairs
 % Dhruv Balwada, 29 Jan 2021
 %
