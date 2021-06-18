@@ -1,5 +1,6 @@
 *.eps
-*.pdf
+code/*.pdf
+code/*/*.pdf
 *.svg
 .DS_Store
 *.mat
