@@ -3,3 +3,7 @@
 *.svg
 .DS_Store
 *.mat
+code/*.png
+code/*/*.png
+*.mp4
+*.m4v

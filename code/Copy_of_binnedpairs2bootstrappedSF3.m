@@ -15,8 +15,8 @@
 clear all
 close all
 %% Load the file where the binned pairs are
-load('../data/structure_pairs_GLAD_deep_500m.mat')
-%load('../data/structure_pairs_LASER_deep_500m.mat')
+%load('../data/structure_pairs_GLAD_deep_500m.mat')
+load('../data/structure_pairs_LASER_deep_500m.mat')
 
 %% Get time axis and figure out how many pairs 
 tpts = length(pairs_time);
@@ -79,7 +79,7 @@ dist_axis = 0.5*(dist_bin(1:end-1) + dist_bin(2:end));
 % Generate vel axis
 vel_bins = linspace(-2, 2, 50);
 vel_axis = 0.5*(vel_bins(1:end-1) + vel_bins(2:end));
-%%
+%
 %% Calculate the moments
 % Takes 38s for GLAD, 22s for deep GLAD
 % Takes 455s for LASER, 88s for deep LASER
@@ -105,20 +105,21 @@ for i = 1:length(dist_axis)
 end
 toc
 
+%%
+clear dul dut dist
 
 %% Generate many estimates of SF3 with random samples
 
 l=length(dist_axis);
 
-bootsamples = 1000; 
+bootsamples = 500; 
 s3lll = zeros(l,bootsamples);
 s3ltt = zeros(l,bootsamples);
 
-% this loop is extremely extremely slow
-% 206 minutes for GLAD
-% 
+% this loop is extremely slow
+% 265s for LASER
 tic
-for i =1:l
+parfor i =1:l
     
     npairs = length(pairs_sep(i).dul);
     disp(i)
@@ -136,5 +137,6 @@ toc
 
 %% Save to file
 
-save ../data/GLAD_S3_deep500_boot_strap.mat s3lll s3ltt dist_axis dist_bin
+%save GLAD_S3_deep500_boot_strap.mat s3lll s3ltt dist_axis dist_bin
+save ../data/LASER_S3_deep500_boot_strap.mat s3lll s3ltt dist_axis dist_bin
 %save GLAD_S3_boot_strap.mat s3lll s3ltt dist_axis dist_bin

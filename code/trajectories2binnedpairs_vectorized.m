@@ -10,14 +10,22 @@ close all
 %%
 
 %traj = load('~/work_root/GoMexico_drifters/GLAD_15min_filtered/traj_mat_GLAD_15min_04_May_2021.mat');
-
+%load('../data/traj_depth_GLAD.mat');
 traj = load('~/work_root/GoMexico_drifters/LASER_SPOT_15min_filtered/traj_mat_LASER_15min_04_May_2021.mat');
+load('../data/traj_depth_LASER.mat');
+
 %% Break up by time and separation bins
 % took 58.9s for GLAD
 % took 146s for LASER 
 tic 
 for i=1:length(traj.T_axis)
-    id = find(~isnan(traj.trajmat_X(i,:)));
+    
+    %id = find(~isnan(traj.trajmat_X(i,:))); % find non-NaN
+    
+    %id = find(~isnan(traj.trajmat_X(i,:)) & Htraj(i,:)<-500); % find non-Nan and deep
+    id = find(~isnan(traj.trajmat_X(i,:)) & Htraj(i,:)<-500 & ...
+        traj.trajmat_X(i,:)>=-91 & traj.trajmat_X(i,:)<=-84 & ...
+        traj.trajmat_Y(i,:)>=24); % find non-Nan and deep and in similar region to GLAD
     if mod(i,300)==0
         disp(i)
     end
@@ -53,8 +61,10 @@ end
 toc
 
 %%
-save structure_pairs_LASER.mat pairs_time -v7.3
-
+%save ../data/structure_pairs_LASER.mat pairs_time -v7.3
+%save ../data/structure_pairs_GLAD_deep_500m.mat pairs_time -v7.3
+%save ../data/structure_pairs_LASER_deep_500m.mat pairs_time -v7.3
+save ../data/structure_pairs_LASER_deep_500m_box_constrained.mat pairs_time -v7.3
 
 %%
 function rx = dist_rx(XI, XJ)
@@ -67,6 +77,9 @@ function du = dist_du(UI, UJ)
 du = UI - UJ;
 end
 function dist = dist_geo(XI,XJ)
+% XI or XJ are the coordinates in lon-lat of two different points,
+% where  XI(:,1) is lon and XI(:,2) is the lat. 
+% The function computes the distance between the 2 points.
 X = abs(XI(:,1) - XJ(:,1)) .*cosd(0.5*(XI(:,2)+XJ(:,2))) *111321;
 Y = abs(XI(:,2) - XJ(:,2)) *111321;
 dist = sqrt(X.^2 + Y.^2);

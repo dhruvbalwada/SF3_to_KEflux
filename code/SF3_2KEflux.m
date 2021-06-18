@@ -4,11 +4,18 @@
 % 
 
 clear all 
+close all 
+
 
 %%
 
-load ../data/S3_boot_strap.mat
+experiment = 'GLAD';
 
+if strcmp(experiment, 'LASER')
+    load ../data/LASER_S3_deep500_boot_strap.mat
+else
+    load ../data/GLAD_S3_deep500_boot_strap.mat
+end
 %%
 
 nsamps = size(s3lll,2);
@@ -17,13 +24,15 @@ r=dist_axis;
 Nr=length(r);
 
 % pick data points larger than 10m for fitting
-ns=find(dist_axis>=10,1);
-ne=Nr;
+ns=find(dist_axis>=20 ,1);
+ne=find(dist_axis<=500e3 ,1,'last');
 
 R=r(ns:ne);
 
 NR=length(R);
 lf=R;
+
+%%
 
 %%
 % kf=10.^(-5:0.1:-1);
@@ -105,25 +114,31 @@ mean_SpecFlux = nanmean(SpecFlux,2);
 colors = get(gca,'ColorOrder');
 
 %% Plot of energy injection 
-close all 
+%close all 
 figure
-shadedErrorBar_semilogx(R/1e3, median_ebs(1:end-1), CI_ebs(:,1:end-1) ...
+shadedErrorBar_semilogx(R/1e3, mean_ebs(1:end-1), CI_ebs(:,1:end-1) ...
                 ,{'o-','linewidth',2,'color', colors(1,:)}, 0.6)
-hold all 
-semilogx(R/1e3, mean_ebs(1:end-1), 'linewidth',2,'color', colors(2,:))
+%hold all 
+%semilogx(R/1e3, mean_ebs(1:end-1), 'linewidth',2,'color', colors(2,:))
 axis([10^-2 10^3 0 10^-7])
 
-legend('Errorbars: 5th and 95th percentiles', 'Median', 'Mean', 'location','northeast')
+%legend('Errorbars: 5th and 95th percentiles', 'Mean', 'location','northeast')
 
 xlabel('$$r [km]$$','interpreter','latex')
 ylabel('$$\epsilon_j [m^2s^{-3}]$$','interpreter','latex')
 %title('Energy Input','interpreter','latex')
 set(gca,'FontSize',18,'FontName','Times')
+%
+if strcmp(experiment, 'LASER')
 
+    print('energy_inject_LASER.png','-dpng', '-r400')
+else
+    print('energy_inject_GLAD.png','-dpng', '-r400')
+end
 %print('energy_input.eps','-depsc', '-r400')
 
 %% Plot of energy injection 
-close all 
+%close all 
 figure
 neg = mean_ebs - CI_ebs(2,:)';
 pos = - mean_ebs + CI_ebs(1,:)';
@@ -140,7 +155,7 @@ ylabel('$$\epsilon_j [m^2s^{-3}]$$','interpreter','latex')
 %title('Energy Input','interpreter','latex')
 set(gca,'FontSize',20,'FontName','Times')
 
-print('energy_input_2.eps','-depsc', '-r400')
+%print('energy_input_2.eps','-depsc', '-r400')
 
 
 %% Plot of 3rd Order SF
@@ -162,8 +177,13 @@ xlabel('$$r [km]$$','interpreter','latex')
 ylabel('$$V (r) [m^3s^{-3}]$$','interpreter','latex')
 set(gca,'FontSize',20,'FontName','Times')
 
-print('S3_and_fit.eps','-depsc', '-r400')
+%
+if strcmp(experiment, 'LASER')
 
+    print('S3_and_fit_LASER.png','-dpng', '-r400')
+else
+    print('S3_and_fit_GLAD.png','-dpng', '-r400')
+end
 
 %% Spectral Flux plot 
 figure
@@ -179,7 +199,12 @@ xlabel('$$k [1/km]$$','interpreter','latex')
 ylabel('$$F(k) [m^2 s^{-3}]$$','interpreter','latex')
 set(gca,'FontSize',20,'FontName','Times')
 
-axis([10^-3 100 -8*10^-8 8*10^-8])
+axis([10^-3 100 -18*10^-8 10*10^-8])
 xticks([10^-3, 10^-2, .1, 1, 10, 100])
 
-print('spectral_flux.eps','-depsc', '-r400')
+if strcmp(experiment, 'LASER')
+
+    print('spectral_flux_LASER.png','-dpng', '-r400')
+else
+    print('spectral_flux_GLAD.png','-dpng', '-r400')
+end

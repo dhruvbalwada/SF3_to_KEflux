@@ -13,7 +13,7 @@ traj.Y = traj.trajmat_Y;
 traj.U = traj.trajmat_U;
 traj.V = traj.trajmat_V;
 
-%% 
+%% Rough figure 
 close all
 
 ndays = 10; 
@@ -34,7 +34,8 @@ set(gca,'FontSize',18,'FontName','Times')
 
 %print('traj_plot.eps','-depsc', '-r400')
 
-%% 
+%% Good figure, zoomed into initial 
+
 close all
 
 ndays = 10;
@@ -85,8 +86,8 @@ end
 print('traj_plot_GLAD.eps','-depsc', '-r400')
 %set(gca,'FontSize',20,'FontName','Times')
 
-%%
-%% 
+
+%% Full domain figure 
 close all
 
 ndays = 10;
