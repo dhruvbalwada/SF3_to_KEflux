@@ -11,10 +11,6 @@ close all
 
 %%
 
-% how we do the inversion.
-% Options: LS, NNLS, Reg LS, Reg NNLS
-inv_style = 'LS'; 
-lambda = 1;
 % Experiment name
 % Options: LASER, GLAD
 experiment = 'LASER'; 
@@ -28,7 +24,12 @@ end
 s3lll = mean(s3lll,2);
 s3ltt = mean(s3ltt,2);
 
-%%
+%% how we do the inversion.
+% Options: LS, NNLS, Reg LS, Reg NNLS
+inv_style = 'LS'; 
+%lambda = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1] ;
+lambda = logspace(-4, -1, 11);
+%
 
 %nsamps = size(s3lll,2);
 nsamps=1;
@@ -75,8 +76,8 @@ Vt = zeros(NR,nsamps);
 SpecFlux = zeros(Nk, nsamps); 
 
 norm_flag=1;
-
-for n=1:nsamps
+n=1; 
+for m=1:length(lambda)
     
     % SF3 from the data
     S(:,n) =s3lll(:,n)' +s3ltt(:,n)';
@@ -108,12 +109,12 @@ for n=1:nsamps
     O = zeros(Nk+1, 1);
     
     for j=1:Nk
-       I(j,j) = dk(j); 
+       I(j,j) = dk(j)^0.5; 
     end
     
     V = V'; % make a column
     
-    Areg = [A; lambda*I];
+    Areg = [A; lambda(m)*I];
     Vreg = [V; O];
     
     % estimate the epsilons using least squares
@@ -135,39 +136,43 @@ for n=1:nsamps
     for j = 2:Nk
         SpecFlux(j,n) = SpecFlux(j-1,n) + ebs(end-j+1, n)*dk(end-j+2);
     end
-    
+
+
+term1(m) = sum((V-Vt./R').^2);
+term2(m) = sum((ebs(1:end-1)).^2 .* dk');
+
+%
+figure
+subplot(211)
+semilogx(R, V)
+hold all 
+semilogx(R, Vt./R')
+grid on
+title(num2str(lambda(m)))
+
+subplot(212)
+semilogx(kf, ebs(1:end-1).*kf')
+grid
+%savefig(strcat(num2str(lambda(m)), '.pdf'))
+print(['lambda_', num2str(lambda(m)), '.png'],'-dpng', '-r400')
+
 end
 
 SpecFlux = flipud(SpecFlux); 
-%% Estimate confidence intervals 
 
-clear CI_ebs CI_Vt
 
-for i = 1:size(ebs,1)
-    CI_ebs(:,i) = prctile(ebs(i,:), [99, 1]); 
-end
+%%
+figure
+loglog(term1, term2)
+text(term1 (1:2:end), term2(1:2:end), num2str(lambda(1:2:end)'))
+xlabel('Error norm')
+ylabel('Total variation')
+print(['L_curve.png'],'-dpng', '-r400')
 
-for i = 1:size(Vt,1)
-    CI_Vt(:,i) = prctile(Vt(i,:), [99,1]);
-end
 
-for i = 1:size(SpecFlux,1)    
-    CI_SpecFlux(:,i) = prctile(SpecFlux(i,:), [99,1]);
-end
-
-median_ebs = median(ebs,2); 
-mean_ebs = nanmean(ebs,2); 
-median_Vt = median(Vt,2);
-mean_Vt = nanmean(Vt,2);
-
-median_S = median(S,2);
-mean_S = nanmean(S,2);
-
-median_SpecFlux = median(SpecFlux,2);
-mean_SpecFlux = nanmean(SpecFlux,2);
 
 %%
 inv_style = strcat(inv_style, strcat('reg', num2str(lambda))); 
 
 %%
-plots_SF3_fits
+%plots_SF3_fits

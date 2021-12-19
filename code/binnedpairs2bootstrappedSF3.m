@@ -138,3 +138,14 @@ toc
 
 save ../data/GLAD_S3_deep500_boot_strap.mat s3lll s3ltt dist_axis dist_bin
 %save GLAD_S3_boot_strap.mat s3lll s3ltt dist_axis dist_bin
+
+%%
+
+load ../data/GLAD_S3_deep500_boot_strap.mat
+
+%%
+
+SF3_mean_bs = mean(s3lll+s3ltt,2); 
+SF3_stderr_bs = std(s3lll+s3ltt,0,2); 
+
+

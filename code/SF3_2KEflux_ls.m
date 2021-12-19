@@ -20,13 +20,16 @@ inv_style = 'NNLS';
 experiment = 'LASER'; 
 
 if strcmp(experiment, 'LASER')
-    load ../data/LASER_S3_deep500_boot_strap.mat
+    %load ../data/LASER_S3_deep500_boot_strap.mat
+    load('../data/LASER_S3_deep500_box_constrained_block_boot_strap_Ldof.mat')
+    SF3(end-1:end,:) = NaN;
 else
-    load ../data/GLAD_S3_deep500_boot_strap.mat
+    %load ../data/GLAD_S3_deep500_boot_strap.mat
+    load('../data/GLAD_S3_deep500_block_boot_strap_Ldof.mat')
 end
 %%
 
-nsamps = size(s3lll,2);
+nsamps = size(SF3,2);
 
 r=dist_axis;
 Nr=length(r);
@@ -34,7 +37,7 @@ Nr=length(r);
 % select part of the r axis that we think has reasonable
 % data.
 
-ns=find(dist_axis>=20 ,1);
+ns=find(dist_axis>=50 ,1);
 ne=find(dist_axis<=500e3 ,1,'last');
 
 R=r(ns:ne); 
@@ -74,7 +77,8 @@ norm_flag=1;
 for n=1:nsamps
     
     % SF3 from the data
-    S(:,n) =s3lll(:,n)' +s3ltt(:,n)';
+    %S(:,n) =s3lll(:,n)' +s3ltt(:,n)';
+    S(:,n) = SF3(:,n);
     
     % SF3 over the selected range od points
     V=S(ns:ne, n)';
@@ -123,27 +127,35 @@ end
 SpecFlux = flipud(SpecFlux); 
 %% Estimate confidence intervals 
 
-clear CI_ebs CI_Vt
+clear CI_ebs CI_Vt CI_SpecFlux CI_SF3
+
+% Convert parameters to variance preserving form for plotting
+ebs_varp = ebs;
+ebs_varp(1:end-1,:) = ebs(1:end-1,:).*kf';
 
 for i = 1:size(ebs,1)
-    CI_ebs(:,i) = prctile(ebs(i,:), [99, 1]); 
+    CI_ebs(:,i) = prctile(ebs_varp(i,:), [95, 5]); 
 end
 
 for i = 1:size(Vt,1)
-    CI_Vt(:,i) = prctile(Vt(i,:), [99,1]);
+    CI_Vt(:,i) = prctile(Vt(i,:), [95,5]);
+end
+
+for i = 1:size(SF3,1)
+    CI_SF3(:,i) = prctile(SF3(i,:), [95,5]);
 end
 
 for i = 1:size(SpecFlux,1)    
-    CI_SpecFlux(:,i) = prctile(SpecFlux(i,:), [99,1]);
+    CI_SpecFlux(:,i) = prctile(SpecFlux(i,:), [95,5]);
 end
 
-median_ebs = median(ebs,2); 
-mean_ebs = nanmean(ebs,2); 
+median_ebs = median(ebs_varp,2); 
+mean_ebs = nanmean(ebs_varp,2); 
 median_Vt = median(Vt,2);
 mean_Vt = nanmean(Vt,2);
 
-median_S = median(S,2);
-mean_S = nanmean(S,2);
+%median_S = median(S,2);
+mean_SF3 = nanmean(SF3,2);
 
 median_SpecFlux = median(SpecFlux,2);
 mean_SpecFlux = nanmean(SpecFlux,2);

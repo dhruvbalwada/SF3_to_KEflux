@@ -13,20 +13,20 @@ close all
 
 % how we do the inversion.
 % Options: LS, NNLS, Reg LS, Reg NNLS
-inv_style = 'LS'; 
-lambda = 1;
+inv_style = 'NNLS'; 
+lambda = 2;
 % Experiment name
 % Options: LASER, GLAD
-experiment = 'LASER'; 
+experiment = 'GLAD'; 
 
 if strcmp(experiment, 'LASER')
     load ../data/LASER_S3_deep500_boot_strap.mat
 else
-    load ../data/GLAD_S3_deep500_boot_strap.mat
+    load('../data/GLAD_S3_deep500_block_boot_strap_Ldof.mat')
 end
 %%
 
-nsamps = size(s3lll,2);
+nsamps = size(SF3,2);
 
 r=dist_axis;
 Nr=length(r);
@@ -74,7 +74,8 @@ norm_flag=1;
 for n=1:nsamps
     
     % SF3 from the data
-    S(:,n) =s3lll(:,n)' +s3ltt(:,n)';
+    %S(:,n) =s3lll(:,n)' +s3ltt(:,n)';
+    S(:,n) = SF3(:,n);
     
     % SF3 over the selected range od points
     V=S(ns:ne, n)';
