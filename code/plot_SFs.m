@@ -347,5 +347,4 @@ mid_diff_du = 0.5*((SF2tt(1:end-1) - SF2ll(1:end-1))+(SF2tt(2:end)-SF2ll(2:end))
         SF2rr(i) = SF2tt(i) + nansum(1./mid_dist_axis(1:i-1).*mid_diff_du(1:i-1).*diff(dist_axis(1:i)));
         SF2dd(i) = SF2ll(i) - nansum(1./mid_dist_axis(1:i-1).*mid_diff_du(1:i-1).*diff(dist_axis(1:i)));
     end
-
 end
