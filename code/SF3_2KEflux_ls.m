@@ -161,5 +161,19 @@ median_SpecFlux = median(SpecFlux,2);
 mean_SpecFlux = nanmean(SpecFlux,2);
 
 %%
+id_large = find(kf>1/200e3 & kf<1/10e3);
+id_small = find(kf>=1/10e3 & kf<1/100); 
+
+ebs_ls = sum(ebs(id_large, :).* dk(id_large)', 1); 
+ebs_ss = sum(ebs(id_small, :).* dk(id_small)', 1); 
+
+mean_ebs_ls = mean(ebs_ls); 
+mean_ebs_ss = mean(ebs_ss); 
+
+CI_ebs_ls = prctile(ebs_ls, [95, 5]);
+CI_ebs_ss = prctile(ebs_ss, [95, 5]);
+%%
+
+stop
 
 plots_SF3_fits
