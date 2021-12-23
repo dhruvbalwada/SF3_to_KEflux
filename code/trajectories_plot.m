@@ -4,7 +4,7 @@
 clear all
 close all
 
-traj = load ('/Users/dhruvbalwada/work_root/GoMexico_drifters/GLAD_15min_filtered/traj_mat_GLAD_15min_04_May_2021.mat');
+traj = load ('/Users/dhruvbalwada/OneDrive/GoMexico_drifters_data/GLAD_15min_filtered/traj_mat_GLAD_15min_04_May_2021.mat');
 %traj = load ('/Users/dhruvbalwada/work_root/GoMexico_drifters/LASER_SPOT_15min_filtered/traj_mat_LASER_15min_04_May_2021.mat');
 
 %%
@@ -136,4 +136,4 @@ for i = 1:size(traj.X, 2)
     %hold all
 end
 
-print('traj_plot_large_LASER.eps','-depsc', '-r400')
+%print('traj_plot_large_LASER.eps','-depsc', '-r400')

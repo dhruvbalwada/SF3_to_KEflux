@@ -1,3 +1,7 @@
+%% Test to see if vectorized code works
+% Dhruv Balwada
+% May 2021
+
 clear all 
 
 %% Make fake data

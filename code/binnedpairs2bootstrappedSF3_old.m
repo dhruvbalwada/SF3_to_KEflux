@@ -12,6 +12,14 @@
 % repetition). These resampled data are then used to create an estimate of
 % SF3. This process is repeated many times to generate many SF3s.
 
+%%%%%%%
+%%%%%%%
+%%%%%%% This does regular bootstrapping
+%%%%%%% please use the block bootstrapping code instead.
+%%%%%%%
+%%%%%%%
+
+
 clear all
 close all
 %% Load the file where the binned pairs are

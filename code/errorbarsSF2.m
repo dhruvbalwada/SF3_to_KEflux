@@ -6,7 +6,7 @@ clear all
 %close all
 %% Load the file where the binned pairs are
 
-experiment = 'LASER';
+experiment = 'GLAD';
 
 if strcmp(experiment, 'GLAD')
     load('../data/structure_pairs_GLAD_deep_500m.mat')
@@ -121,6 +121,14 @@ for i = 1:length(pairs_sep)
     nsamps_per_block_sep(i) = ceil(npairs_sep(i)/ n_blocks_sep(i));
 end
 
+%%
+if strcmp(experiment, 'GLAD')
+    save ../data/GLAD_npairs_deep500_block_boot_strap_Ldof.mat npairs_sep dist_axis dist_bin
+else
+    save ../data/LASER_npairs_deep500_box_constrained_block_boot_strap_Ldof.mat npairs_sep dist_axis dist_bin
+end
+
+stop
 %%
 clear SF3 SF3_mean SF3_stderr
 

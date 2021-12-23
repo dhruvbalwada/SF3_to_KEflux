@@ -11,6 +11,11 @@
 % Code to do the helmholtz decomposition on the observational
 % 2nd order structure functions.
 
+%%%%%%
+%%%%%% This is old code!!!
+%%%%%% Not used in this work!!!
+%%%%%%
+
 clear all
 close all
 
