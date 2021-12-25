@@ -6,7 +6,7 @@ clear all
 %close all
 %% Load the file where the binned pairs are
 
-experiment = 'GLAD';
+experiment = 'LASER';
 
 if strcmp(experiment, 'GLAD')
     load('../data/structure_pairs_GLAD_deep_500m.mat')
@@ -72,9 +72,7 @@ dist_bin(2:end+1) = dist_bin(1:end);
 dist_bin(1) = 0;
 dist_axis = 0.5*(dist_bin(1:end-1) + dist_bin(2:end));
 
-% Generate vel axis
-vel_bins = linspace(-2, 2, 50);
-vel_axis = 0.5*(vel_bins(1:end-1) + vel_bins(2:end));
+
 %%
 tic
 for i = 1:length(dist_axis)
@@ -113,6 +111,9 @@ Tscale_tt = 1./(((SF2tt).^0.5)./dist_axis);
 
 dof = ceil(Ttot./Tscale_tot); % this is essentially T_tot/T_scale(r)
 
+%%
+figure
+loglog(dist_axis, dof)
 
 %%
 for i = 1:length(pairs_sep)
@@ -123,9 +124,9 @@ end
 
 %%
 if strcmp(experiment, 'GLAD')
-    save ../data/GLAD_npairs_deep500_block_boot_strap_Ldof.mat npairs_sep dist_axis dist_bin
+    save ../data/GLAD_npairs_deep500_block_boot_strap_Ldof.mat npairs_sep dist_axis dist_bin dof nsamps_per_block_sep
 else
-    save ../data/LASER_npairs_deep500_box_constrained_block_boot_strap_Ldof.mat npairs_sep dist_axis dist_bin
+    save ../data/LASER_npairs_deep500_box_constrained_block_boot_strap_Ldof.mat npairs_sep dist_axis dist_bin dof nsamps_per_block_sep
 end
 
 stop

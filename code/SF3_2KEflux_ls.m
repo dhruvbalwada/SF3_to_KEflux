@@ -13,7 +13,7 @@ close all
 
 % how we do the inversion.
 % Options: LS, NNLS, Reg LS, Reg NNLS
-inv_style = 'NNLS'; 
+inv_style = 'LS'; 
 
 % Experiment name
 % Options: LASER, GLAD
@@ -174,6 +174,9 @@ CI_ebs_ls = prctile(ebs_ls, [95, 5]);
 CI_ebs_ss = prctile(ebs_ss, [95, 5]);
 %%
 
-stop
-
-plots_SF3_fits
+%stop
+if strcmp(inv_style, 'LS')
+    plots_SF3_fits_ls
+else
+    plots_SF3_fits_nnls
+end
