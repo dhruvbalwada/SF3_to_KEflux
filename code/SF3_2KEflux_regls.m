@@ -17,7 +17,7 @@ inv_style = 'NNLS';
 lambda = 2;
 % Experiment name
 % Options: LASER, GLAD
-experiment = 'GLAD'; 
+experiment = 'LASER'; 
 
 if strcmp(experiment, 'LASER')
     load ../data/LASER_S3_deep500_boot_strap.mat
@@ -34,7 +34,7 @@ Nr=length(r);
 % select part of the r axis that we think has reasonable
 % data.
 
-ns=find(dist_axis>=20 ,1);
+ns=find(dist_axis>=50 ,1);
 ne=find(dist_axis<=500e3 ,1,'last');
 
 R=r(ns:ne); 
@@ -166,4 +166,4 @@ mean_SpecFlux = nanmean(SpecFlux,2);
 inv_style = strcat(inv_style, strcat('reg', num2str(lambda))); 
 
 %%
-plots_SF3_fits
+plots_SF3_fits_nnls

@@ -65,7 +65,7 @@ loglog(GLAD_numpairs.dist_axis/1e3, GLAD_numpairs.npairs_sep, 'linewidth',2, 'co
 hold all
 loglog(LASER_numpairs.dist_axis/1e3, LASER_numpairs.npairs_sep, 'linewidth',2, 'color', cols(1,:))
 
-legend('GLAD', 'LASER', 'location','northwest')
+legend('GLAD/ Summer', 'LASER/ Winter', 'location','northwest')
 axis([1e-2 1e3 5e3 1e8])
 set(gca,'fontsize',16, 'fontname','Times')
 ylabel('Number of pairs')
@@ -95,7 +95,8 @@ for i = 1:length(yaxis)
     end
 end
 
-
+GLAD_nperbin(GLAD_nperbin == 0) = NaN;
+LASER_nperbin(LASER_nperbin == 0) = NaN;
 %% Full domain figure 
 
 figure
@@ -116,7 +117,7 @@ m_grid('linestyle','none','tickdir','in','linewidth',1,'FontSize',20,'FontName',
 m_coast('patch',[0.5 0.5 0.5])
 set(gca,'fontsize',16, 'fontname','Times')
 
-title('GLAD')
+title('GLAD/ Summer', 'color',  cols(7,:))
 print(['./fig_data_dist/bins_glad.png'],'-dpng', '-r400')
 
 %%
@@ -138,7 +139,7 @@ m_grid('linestyle','none','tickdir','in','linewidth',1,'FontSize',20,'FontName',
 m_coast('patch',[0.5 0.5 0.5])
 set(gca,'fontsize',16, 'fontname','Times')
 
-title('LASER')
+title('LASER/ Winter', 'color',  cols(1,:))
 print(['./fig_data_dist/bins_laser.png'],'-dpng', '-r400')
 
 %%

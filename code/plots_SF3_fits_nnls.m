@@ -5,6 +5,7 @@
 %% 
 % get the color axis
 colors = get(gca,'ColorOrder');
+%%
 close all
 
 if strcmp(experiment, 'GLAD')
@@ -25,11 +26,24 @@ shadedErrorBar_semilogx((kf)*1e3, mean_ebs(1:end-1), CI_ebs(:,1:end-1) ...
                 ,{'o-','linewidth',2,'color', colors(col_num,:),'Markersize',5}, 0.6)
 
 %grid on
-xlabel('$$k [km^{-1}]$$','interpreter','latex')
+xlabel('$$k [1/km]$$','interpreter','latex')
 ylabel('$$k.\epsilon_j [m^2s^{-3}]$$','interpreter','latex')
 %title('Energy Input','interpreter','latex')
 set(gca,'FontSize',18,'FontName','Times')
 axis([10^-3 100 0 3.5*10^-7])
+
+
+
+ax1=gca;
+ax2 = axes('Position', get(ax1, 'Position'),'Color', 'none');
+set(ax2, 'XAxisLocation', 'top','YAxisLocation','Right');
+% set the same Limits and Ticks on ax2 as on ax1;
+set(ax2, 'XLim', get(ax1, 'XLim'),'xscale','log');
+set(ax2, 'XTick', get(ax1, 'XTick') , 'YTick', get(ax1, 'YTick'));
+%OppTickLabels = {'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k'}
+OppTickLabels = {'' '100km' '10km' '1km' '100m' '10m' }
+% Set the x-tick and y-tick  labels for the second axes
+set(ax2, 'XTickLabel', OppTickLabels,'YTickLabel',{}, 'FontSize',18,'FontName','Times')
 
 print(['energy_inject_', experiment,'_', inv_style, '.png'],'-dpng', '-r400')
 
@@ -46,10 +60,21 @@ hold all
 yline(0, '--')
 xlabel('$$k [1/km]$$','interpreter','latex')
 ylabel('$$F(k) [m^2 s^{-3}]$$','interpreter','latex')
-set(gca,'FontSize',20,'FontName','Times')
+set(gca,'FontSize',18,'FontName','Times')
 
 axis([10^-3 100 -20*10^-8 10*10^-8])
 xticks([10^-3, 10^-2, .1, 1, 10, 100])
+
+ax1=gca;
+ax2 = axes('Position', get(ax1, 'Position'),'Color', 'none');
+set(ax2, 'XAxisLocation', 'top','YAxisLocation','Right');
+% set the same Limits and Ticks on ax2 as on ax1;
+set(ax2, 'XLim', get(ax1, 'XLim'),'xscale','log');
+set(ax2, 'XTick', get(ax1, 'XTick') , 'YTick', get(ax1, 'YTick'));
+%OppTickLabels = {'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k'}
+OppTickLabels = {'' '100km' '10km' '1km' '100m' '10m' }
+% Set the x-tick and y-tick  labels for the second axes
+set(ax2, 'XTickLabel', OppTickLabels,'YTickLabel',{}, 'FontSize',18,'FontName','Times')
 
 print(['spectral_flux_', experiment,'_', inv_style, '.png'],'-dpng', '-r400')
 
@@ -102,13 +127,13 @@ lin = loglog(r/1e3, 1e-7*r, '--', 'color', [0.5, 0.5, 0.5]);
 axis([10^-2 10^3 10^-7 0.3])
 xticks([10^-2, 10^-1, 1, 10, 100, 1000])
 
-legend([G,L, lin], 'GLAD', 'LASER','$r^1$', 'location', 'best','interpreter','latex')
+legend([G,L, lin], 'GLAD/ Summer', 'LASER/ Winter','$r^1$', 'location', 'best','interpreter','latex')
 set(gca,'FontSize',22,'FontName','Times')
 xlabel('$$r [km]$$','interpreter','latex')
 ylabel('$$V (r) [m^3s^{-3}]$$','interpreter','latex')
 
 print(['S3_both.png'],'-dpng', '-r400')
-%print(['S3_both.eps'],'-deps2')
+%print(['S3_both.pdf'])
 
 %% Plot of 3rd Order SF and fit
 figure 

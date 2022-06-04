@@ -150,8 +150,8 @@ loglog(LASER_dof.dist_axis/1e3, LASER_dof.dof, ...
     'linewidth',2, 'color',cols(1,:))
 
 axis([0.01 1000 1 1e4])
-set(gca,'fontsize',16, 'fontname','Times')
-legend( 'GLAD', 'LASER', 'location','northeast')
+set(gca,'fontsize',18, 'fontname','Times')
+legend( 'GLAD/ Summer', 'LASER/ Winter', 'location','northeast')
 
 ylabel('$N^{DOF}$', 'interpreter','latex')
 xlabel('$r [km]$', 'interpreter','latex')
@@ -167,8 +167,8 @@ loglog(LASER_dof.dist_axis/1e3, LASER_dof.nsamps_per_block_sep, ...
     'linewidth',2, 'color',cols(1,:))
 
 axis([0.01 1000 1 1e7])
-set(gca,'fontsize',16, 'fontname','Times')
-legend( 'GLAD', 'LASER', 'location','northwest')
+set(gca,'fontsize',18, 'fontname','Times')
+legend( 'GLAD/ Summer', 'LASER/ Winter', 'location','northwest')
 
 ylabel('Number of samples per block', 'interpreter','latex')
 xlabel('$r [km]$', 'interpreter','latex')

@@ -17,7 +17,7 @@ inv_style = 'LS';
 
 % Experiment name
 % Options: LASER, GLAD
-experiment = 'LASER'; 
+experiment = 'GLAD'; 
 
 if strcmp(experiment, 'LASER')
     %load ../data/LASER_S3_deep500_boot_strap.mat

@@ -37,7 +37,7 @@ LASER.SF2ll_mean = mean(LASER.SF2ll, 2);
 
 %%
 cols = colororder;
-
+r = GLAD.dist_axis/1e3;
 %% Total SF2 plot
 figure
 G = shadedErrorBar_log(GLAD.dist_axis/1e3, GLAD.SF2tot_mean, ...
@@ -46,9 +46,14 @@ hold all
 L = shadedErrorBar_log(LASER.dist_axis/1e3, LASER.SF2tot_mean, ...
     LASER.CI_SF2tot, {'color', cols(1,:), 'linewidth',2}, 1);
 
+r2 = loglog(r, 5e-3*r.^2, 'k--');
+r23 = loglog(r, 5e-3*r.^(2/3), 'k-');
+
 axis([0.01 1000 5e-5 5e-1])
 set(gca,'fontsize',18, 'fontname','Times')
-legend([G.mainLine, L.mainLine], 'GLAD', 'LASER', 'location','northwest')
+%legend([G.mainLine, L.mainLine, r2, r23], '{\color[rgb]{0.635,0.078,0.184}} GLAD/ Summer', ...
+%    '\color[rgb]{0,0.447,0.741} LASER/ Winter', '$r^{2}$', '$r^{2/3}$', 'location','northwest', 'interpreter','latex')
+legend([G.mainLine, L.mainLine, r2, r23], 'GLAD/ Summer', 'LASER/ Winter', '$r^{2}$', '$r^{2/3}$', 'location','northwest', 'interpreter','latex')
 
 ylabel('$<\delta u_{ll}^2 + \delta u_{tt}^2> [m^2/s^2]$', 'interpreter','latex')
 xlabel('$r [km]$', 'interpreter','latex')
@@ -100,14 +105,17 @@ E = shadedErrorBar_log(GLAD.dist_axis/1e3, GLAD.SF2tot_mean, GLAD.CI_SF2tot,...
 %shadedErrorBar_log(GLAD.dist_axis/1e3, GLAD.SF2tot_mean, GLAD.CI_SF2tot,...
 %    {'color',cols(1,:), 'linewidth',2}, 2)
 
+r2 = loglog(r, 5e-3*r.^2, 'k--');
+r23 = loglog(r, 5e-3*r.^(2/3), 'k-');
+
 axis([0.01 1000 5e-5 5e-1])
 set(gca,'fontsize',18, 'fontname','Times')
-legend([R.mainLine, D.mainLine, E.mainLine], 'Longitudinal', 'Transverse', 'Total', ...
-    'location','northwest')
+legend([R.mainLine, D.mainLine, E.mainLine, r2, r23], 'Longitudinal', 'Transverse', 'Total',  '$r^{2}$', '$r^{2/3}$', ...
+    'location','northwest', 'interpreter', 'latex')
 %legend('GLAD rot', 'GLAD div', 'GLAD total', 'LASER rot', 'LASER div', 'LASER total' , 'location', 'best')
 ylabel('$<\delta u_i^2> [m^2/s^2]$', 'interpreter','latex')
 xlabel('$r [km]$', 'interpreter','latex')
-
+title('GLAD/ Summer', 'color', cols(7,:))
 print(['GLAD_SF2_components.png'],'-dpng', '-r400')
 
 %% SF2 LASER components
@@ -127,14 +135,17 @@ E = shadedErrorBar_log(LASER.dist_axis/1e3, LASER.SF2tot_mean, LASER.CI_SF2tot,.
 %shadedErrorBar_log(GLAD.dist_axis/1e3, GLAD.SF2tot_mean, GLAD.CI_SF2tot,...
 %    {'color',cols(1,:), 'linewidth',2}, 2)
 
+r2 = loglog(r, 5e-3*r.^2, 'k--');
+r23 = loglog(r, 5e-3*r.^(2/3), 'k-');
+
 axis([0.01 1000 5e-5 5e-1])
 set(gca,'fontsize',18, 'fontname','Times')
-legend([R.mainLine, D.mainLine, E.mainLine], 'Longitudinal', 'Transverse', 'Total', ...
-    'location','northwest')
+legend([R.mainLine, D.mainLine, E.mainLine, r2, r23], 'Longitudinal', 'Transverse', 'Total',  '$r^{2}$', '$r^{2/3}$', ...
+    'location','northwest', 'interpreter', 'latex')
 %legend('GLAD rot', 'GLAD div', 'GLAD total', 'LASER rot', 'LASER div', 'LASER total' , 'location', 'best')
 ylabel('$<\delta u_i^2> [m^2/s^2]$', 'interpreter','latex')
 xlabel('$r [km]$', 'interpreter','latex')
-
+title('LASER/ Winter', 'color', cols(1,:))
 print(['LASER_SF2_components.png'],'-dpng', '-r400')
 
 %% Helmholtz decomposition 
@@ -179,6 +190,8 @@ D = shadedErrorBar_log(GLAD.dist_axis/1e3, GLAD.SF2dd_mean, GLAD.CI_SF2dd,...
     {'color',cols(3,:), 'linewidth',2}, 1);
 %shadedErrorBar_log(GLAD.dist_axis/1e3, GLAD.SF2tot_mean, GLAD.CI_SF2tot,...
 %    {'color',cols(1,:), 'linewidth',2}, 2)
+r2 = loglog(r, 5e-3*r.^2, 'k--');
+r23 = loglog(r, 5e-3*r.^(2/3), 'k-');
 
 axis([0.01 1000 5e-5 5e-1])
 set(gca,'fontsize',18, 'fontname','Times')
@@ -201,12 +214,13 @@ LASER.CI_SF2dd(LASER.CI_SF2dd<=0) = 1e-7;
 
 shadedErrorBar_log(LASER.dist_axis/1e3, LASER.SF2dd_mean, LASER.CI_SF2dd,...
     {'color',cols(3,:), 'linewidth',2}, 1);
-
+r2 = loglog(r, 5e-3*r.^2, 'k--');
+r23 = loglog(r, 5e-3*r.^(2/3), 'k-');
 %shadedErrorBar_log(LASER.dist_axis/1e3, LASER.SF2tot_mean, LASER.CI_SF2tot,...
 %    {'color',cols(1,:), 'linewidth',2}, 2)
 
 axis([0.01 1000 5e-5 5e-1])
-set(gca,'fontsize',16, 'fontname','Times')
+set(gca,'fontsize',18, 'fontname','Times')
 %legend('GLAD rot', 'GLAD div', 'GLAD total', 'LASER rot', 'LASER div', 'LASER total' , 'location', 'best')
 ylabel('$<\delta u_i^2> [m^2/s^2]$', 'interpreter','latex')
 xlabel('$r [km]$', 'interpreter','latex')
@@ -263,6 +277,7 @@ set(gca,'fontsize',16, 'fontname','Times')
 legend([R.mainLine, D.mainLine, T.mainLine], 'Rotational', 'Divergent', 'Total', 'location', 'best')
 ylabel('$<\delta u_i^2>/r [m/s^2]$', 'interpreter','latex')
 xlabel('$r [km]$', 'interpreter','latex')
+title('GLAD/ Summer', 'color', cols(7,:))
 
 print(['GLAD_SF2_decompose_compensated.png'],'-dpng', '-r400')
 
@@ -284,9 +299,10 @@ hlines(0, '--')
 grid on
 axis([0.01 1000 -3e-6 14e-6])
 set(gca,'fontsize',16, 'fontname','Times')
-legend([R.mainLine, D.mainLine, T.mainLine], 'Rotational', 'Divergent', 'Total', 'location', 'best')
+%legend([R.mainLine, D.mainLine, T.mainLine], 'Rotational', 'Divergent', 'Total', 'location', 'best')
 ylabel('$<\delta u_i^2>/r [m/s^2]$', 'interpreter','latex')
 xlabel('$r [km]$', 'interpreter','latex')
+title('LASER/ Winter', 'color', cols(1,:))
 
 print(['LASER_SF2_decompose_compensated.png'],'-dpng', '-r400')
 
@@ -300,8 +316,8 @@ function [SF2rr SF2dd] = helmholtz_decompose(dist_axis, SF2ll, SF2tt)
 mid_dist_axis = 0.5*(dist_axis(1:end-1)+dist_axis(2:end));
 mid_diff_du = 0.5*((SF2tt(1:end-1) - SF2ll(1:end-1))+(SF2tt(2:end)-SF2ll(2:end)));
 
-SF2rr(1) = 1e-10;
-SF2dd(1) = 1e-10;
+SF2rr(1) = SF2tt(1);
+SF2dd(1) = SF2ll(1);
     for i =2:length(dist_axis)
         SF2rr(i) = SF2tt(i) + nansum(1./mid_dist_axis(1:i-1).*mid_diff_du(1:i-1).*diff(dist_axis(1:i)));
         SF2dd(i) = SF2ll(i) - nansum(1./mid_dist_axis(1:i-1).*mid_diff_du(1:i-1).*diff(dist_axis(1:i)));

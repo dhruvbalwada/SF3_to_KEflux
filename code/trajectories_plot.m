@@ -43,7 +43,7 @@ figure
 m_proj('Lambert','lon',[-91 -84.5],'lat',[26 31]); 
 
 %[elev, long, latg] = m_elev([-93 -82 26 31]);
-[elev, latg, long] = mygrid_sand2([-91.5 -83.5 26 31]);
+%[elev, latg, long] = mygrid_sand2([-91.5 -83.5 26 31]);
 
 clear CS CH
 [CS, CH] = m_contourf(long-360, latg, elev, [-3500:250:0 ], 'edgecolor','none');
